@@ -1,0 +1,4 @@
+markdown  = { (h1 | h2 | paragraph | "\n")* }
+h1        = { "# " ~ (ASCII_ALPHANUMERIC | " ")+ ~ "\n"? }
+h2        = { "## " ~ (ASCII_ALPHANUMERIC | " ")+ ~ "\n"? }
+paragraph = { (ASCII_ALPHANUMERIC | " ")+ ~ "\n"? }

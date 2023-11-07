@@ -8,4 +8,3 @@ license="MIT"
 [dependencies]
 pest = "2.7.5"
 pest_derive = "2.7.5"
-html-escape = "0.2.13"
