@@ -1,6 +1,5 @@
 # Markdown Parser
-The library parses Markdown syntax into HTML.  
-
+This is a simple Markdown to HTML parser implemented in Rust using the pest parser generator library. It can convert Markdown text into HTML.
 ## Table of Contents
 1. [Installation](#installation)
 2. [Usage](#usage)
