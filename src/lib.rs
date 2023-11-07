@@ -8,11 +8,9 @@ use html_escape::encode_text;
 
 #[derive(Parser)]
 #[grammar = "markdown.pest"]
-struct MarkdownParser;
+pub struct MarkdownParser;
 
-fn main() {
-    let input = "This is *italic* and **bold** text.";
-
+pub fn parse(input: &str) -> String {
     let pairs = MarkdownParser::parse(Rule::document, input).expect("Failed to parse input.");
 
     let mut output = String::new();
@@ -32,7 +30,7 @@ fn main() {
         }
     }
 
-    println!("{}", output);
+    output
 }
 
 
