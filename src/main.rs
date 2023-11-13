@@ -13,11 +13,7 @@ use thiserror::Error;
 #[command(version = "0.1.0")]
 #[command(about = "Parse markdown to HTML", long_about = None)]
 struct Args {
-    #[arg(
-        short,
-        long,
-        default_value = "/home/stas/NaUKMA/rust/markdown_parser/input.md"
-    )]
+    #[arg(short, long)]
     file: String,
     #[arg(short, long, default_value = "output.html")]
     out: String,
