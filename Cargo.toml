@@ -1,5 +1,5 @@
 [package]
-name = "markdown_parser"
+name = "markdown_to_html_parser"
 version = "0.1.0"
 edition = "2021"
 description = "The library parses Markdown syntax into HTML"
