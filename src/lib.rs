@@ -2,7 +2,7 @@ extern crate pest;
 #[macro_use]
 extern crate pest_derive;
 
-use pest::iterators::{Pair};
+use pest::iterators::Pair;
 use pest::Parser;
 
 #[derive(Parser)]
@@ -10,7 +10,8 @@ use pest::Parser;
 struct MarkdownParser;
 
 pub fn parse_markdown(markdown_text: &str) -> String {
-    let pairs = MarkdownParser::parse(Rule::markdown, markdown_text).unwrap_or_else(|e| panic!("{}", e));
+    let pairs =
+        MarkdownParser::parse(Rule::markdown, markdown_text).unwrap_or_else(|e| panic!("{}", e));
 
     let mut html = String::new();
 
@@ -19,20 +20,18 @@ pub fn parse_markdown(markdown_text: &str) -> String {
         for markdown_inner in markdown.into_inner() {
             match markdown_inner.as_rule() {
                 Rule::elements => {
-                    html.push_str(&parser_elements( &markdown_inner.clone()));
+                    html.push_str(&parser_elements(&markdown_inner.clone()));
                 }
                 Rule::element_inner => {
-                    html.push_str(&parse_element_inner( &markdown_inner.clone()));
+                    html.push_str(&parse_element_inner(&markdown_inner.clone()));
                 }
                 Rule::text => {
-                    html.push_str(&parse_text( &markdown_inner.clone()));
+                    html.push_str(&parse_text(&markdown_inner.clone()));
                 }
                 Rule::new_line => {
-                   html.push_str("<br>\n");
+                    html.push_str("<br>\n");
                 }
-                _ => {
-
-                }
+                _ => {}
             }
         }
     }
@@ -44,21 +43,21 @@ fn parser_elements(elements: &Pair<Rule>) -> String {
     let mut html = String::new();
 
     for element in elements.clone().into_inner() {
-        match element.as_rule(){
+        match element.as_rule() {
             Rule::h1 => {
-                html.push_str(&parse_h(&element,  "h1"));
+                html.push_str(&parse_h(&element, "h1"));
             }
             Rule::h2 => {
-                html.push_str(&parse_h(&element,  "h2"));
+                html.push_str(&parse_h(&element, "h2"));
             }
             Rule::italic_text => {
-                html.push_str(&parse_element(&element,  "i"));
+                html.push_str(&parse_element(&element, "i"));
             }
             Rule::bold_text => {
-                html.push_str(&parse_element(&element,  "b"));
+                html.push_str(&parse_element(&element, "b"));
             }
             Rule::code_text => {
-                html.push_str(&parse_element(&element,  "code"));
+                html.push_str(&parse_element(&element, "code"));
             }
             _ => {}
         }
@@ -71,19 +70,15 @@ fn parse_element(element: &Pair<Rule>, tag_name: &str) -> String {
     let mut inner = String::new();
 
     for header_inner in element.clone().into_inner() {
-        match header_inner.as_rule() {
-            Rule::element_inner => {
-                inner.push_str(&parse_element_inner(&header_inner));
-            }
-            _ => {}
+        if header_inner.as_rule() == Rule::element_inner {
+            inner.push_str(&parse_element_inner(&header_inner));
         }
     }
 
     format!("<{}>{}</{}>", tag_name, inner, tag_name)
 }
 
-
-fn parse_h(header: &Pair<Rule>, tag_name: &str) -> String{
+fn parse_h(header: &Pair<Rule>, tag_name: &str) -> String {
     let mut inner = String::new();
 
     for header_inner in header.clone().into_inner() {
@@ -111,7 +106,6 @@ fn parse_element_inner(element_inner: &Pair<Rule>) -> String {
     element_inner.as_str().to_string()
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -123,7 +117,6 @@ mod tests {
         let html = parse_markdown(&markdown_text);
         println!("{}", html);
     }
-
 
     #[test]
     fn test_valid_simple_header() {
@@ -148,9 +141,9 @@ mod tests {
 
     #[test]
     fn test_simple_markdown() {
-        let markdown_text = "# Header 1\n## Header 2\n\nThis is a paragraph with _italic_ and **bold** text.";
+        let markdown_text =
+            "# Header 1\n## Header 2\n\nThis is a paragraph with _italic_ and **bold** text.";
         let html = parse_markdown(markdown_text);
         assert_eq!(html, "<h1>Header 1</h1>\n<h2>Header 2</h2>\n<br>\nThis is a paragraph with <i>italic</i> and <b>bold</b> text.");
     }
-
 }
