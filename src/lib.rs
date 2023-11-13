@@ -116,31 +116,41 @@ fn parse_element_inner(element_inner: &Pair<Rule>) -> String {
 mod tests {
     use super::*;
 
-    // #[test]
-    // fn it_works() {
-    //     let markdown_text = "# Heading 1\n## Heading 2\n\nThis is a paragraph.";
-    //     let html = parse_markdown(&markdown_text);
-    //     println!("{}", html);
-    // }
+    #[test]
+    fn it_works() {
+        let markdown_text = "# Heading 1\n";
+        // let markdown_text = "# Heading 1\n## Heading 2\n\nThis is a paragraph.";
+        let html = parse_markdown(&markdown_text);
+        println!("{}", html);
+    }
 
 
     #[test]
-    fn test_valid_header() {
+    fn test_valid_simple_header() {
+        let markdown_text = "# Header 1\n";
+        let html = parse_markdown(markdown_text);
+        assert_eq!(html, "<h1>Header 1</h1>\n");
+    }
+
+    #[test]
+    fn test_valid_header_with_italic_code() {
+        let markdown_text = "# Header 1 with _italic_ code\n";
+        let html = parse_markdown(markdown_text);
+        assert_eq!(html, "<h1>Header 1 with <i>italic</i> code</h1>\n");
+    }
+
+    #[test]
+    fn test_valid_invalid_header() {
         let markdown_text = "# Header 1";
         let html = parse_markdown(markdown_text);
-        assert_eq!(html, "<h1>Header 1</h1>");
+        assert_eq!(html, "# Header 1");
     }
 
     #[test]
-    fn test_valid_paragraph() {
-        let markdown_text = "This is a paragraph";
+    fn test_simple_markdown() {
+        let markdown_text = "# Header 1\n## Header 2\n\nThis is a paragraph with _italic_ and **bold** text.";
         let html = parse_markdown(markdown_text);
-        assert_eq!(html, "<p>This is a paragraph</p>");
+        assert_eq!(html, "<h1>Header 1</h1>\n<h2>Header 2</h2>\n<br>\nThis is a paragraph with <i>italic</i> and <b>bold</b> text.");
     }
 
-    #[test]
-    fn test_invalid_header() {
-        let markdown_text = "#Invalid Header";
-        assert_eq!(markdown_text, "#Invalid Header");
-    }
 }
