@@ -8,3 +8,5 @@ license="MIT"
 [dependencies]
 pest = "2.7.5"
 pest_derive = "2.7.5"
+clap = { version = "4.4.8", features = ["derive"] }
+thiserror = "1.0"
